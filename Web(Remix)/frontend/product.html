@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>คีย์บอร์ด ตกแต่งโต๊ะคอมพิวเตอร์ - Online Shopping</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Kanit', sans-serif; }
+  body { background: #fff; color: #333; line-height: 1.7; }
+
+  .cart-badge,
+  .product-meta .meta-left,
+  .price-box,
+  .quantity-control input,
+  .buy-price,
+  .rec-card-price {
+    font-family: 'Kanit', sans-serif;
+    font-variant-numeric: tabular-nums lining-nums;
+    font-feature-settings: "tnum" 1, "lnum" 1;
+    letter-spacing: -0.01em;
+  }
+
+  .price-box {
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+
+  .buy-price,
+  .rec-card-price {
+    font-weight: 700;
+  }
+
+  .quantity-control input,
+  .cart-badge {
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  .navbar { background: #f8dfff; padding: 1rem 5%; }
+  .nav-container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+  .logo { display: flex; align-items: center; gap: 0.6rem; color: #9c00b4; font-weight: 600; font-size: 1.1rem; text-decoration: none; }
+  .logo-icon { background: #e91e8c; padding: 8px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+  .logo-icon svg { width: 20px; height: 20px; color: #fff; }
+  .nav-menu { display: flex; gap: 2.5rem; flex-wrap: wrap; }
+  .nav-link { color: #7b0094; text-decoration: none; font-weight: 500; font-size: 1rem; transition: color 0.2s; }
+  .nav-link:hover { color: #e91e8c; }
+  .nav-link.active { text-decoration: underline; text-underline-offset: 6px; }
+  .nav-icons { display: flex; gap: 1.2rem; align-items: center; }
+  .nav-icons a { color: #7b0094; display: flex; align-items: center; transition: color 0.2s; position: relative; }
+  .nav-icons a:hover { color: #e91e8c; }
+  .nav-icons svg { width: 24px; height: 24px; }
+  .cart-badge {
+    position: absolute; top: -8px; right: -10px; background: #e91e8c; color: #fff;
+    font-size: 0.65rem; font-weight: 600; border-radius: 999px; padding: 1px 5px;
+  }
+
+  .product-page { max-width: 1200px; margin: 2rem auto; padding: 0 5% 4rem; }
+  .product-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    background: #fafafa;
+    border-radius: 12px;
+    padding: 2.5rem;
+  }
+
+  .product-gallery {
+    background: #f0f0f0;
+    border-radius: 10px;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem;
+    overflow: hidden;
+  }
+  .product-gallery img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .product-gallery .placeholder { color: #aaa; font-size: 0.9rem; text-align: center; }
+
+  .product-details { display: flex; flex-direction: column; }
+  .product-title {
+    font-family: 'Kanit', sans-serif;
+    font-weight: 700;
+    font-size: 1.7rem;
+    color: #7b0094;
+    letter-spacing: -0.005em;
+    margin-bottom: 0.8rem;
+  }
+  .product-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.95rem;
+    color: #444;
+    margin-bottom: 1.2rem;
+  }
+  .product-meta .meta-left { display: flex; align-items: center; gap: 0.5rem; }
+  .product-meta .divider { color: #ccc; }
+  .product-meta .wish-btn {
+    background: none; border: none; cursor: pointer; padding: 0;
+    display: flex; align-items: center; transition: transform 0.15s;
+  }
+  .product-meta .wish-btn:active { transform: scale(0.92); }
+  .product-meta .wish-btn svg { width: 18px; height: 18px; fill: none; stroke: #ccc; stroke-width: 2; transition: fill 0.15s, stroke 0.15s; }
+  .product-meta .wish-btn.active svg { fill: #e53935; stroke: #e53935; }
+  .product-meta .wish-btn.pulse svg { animation: wishPulse 0.3s ease; }
+  @keyframes wishPulse { 0% { transform: scale(1); } 40% { transform: scale(1.3); } 100% { transform: scale(1); } }
+  .product-meta .report-link { color: #999; text-decoration: none; }
+  .product-meta .report-link:hover { text-decoration: underline; }
+
+  .price-box {
+    background: linear-gradient(90deg, #fbe9ff, #fdf0fb);
+    border-radius: 8px;
+    padding: 1.1rem 1.5rem;
+    font-weight: 700;
+    font-size: 1.6rem;
+    color: #7b0094;
+    margin-bottom: 1.5rem;
+  }
+  .product-desc {
+    font-size: 0.92rem;
+    color: #666;
+    margin-bottom: 1.3rem;
+    line-height: 1.8;
+  }
+
+  .info-row { display: flex; align-items: flex-start; gap: 1rem; padding: 0.9rem 0; border-bottom: 1px solid #eee; }
+  .info-row .info-label { width: 130px; flex-shrink: 0; font-weight: 500; font-size: 0.92rem; color: #555; }
+  .info-row .info-value { font-size: 0.92rem; color: #333; flex: 1; line-height: 1.7; }
+  .shipping-icon { color: #9c00b4; flex-shrink: 0; }
+  .shipping-icon svg { width: 22px; height: 22px; }
+  .info-sub { color: #999; font-size: 0.82rem; margin-top: 0.2rem; }
+  .guarantee-value { display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+  .guarantee-value svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+  /* --- Options (color / size) --- */
+  .option-group { padding: 1rem 0; border-bottom: 1px solid #eee; display: flex; gap: 1rem; }
+  .option-label { width: 130px; flex-shrink: 0; font-weight: 500; font-size: 0.92rem; color: #555; padding-top: 0.5rem; }
+  .swatch-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.7rem; flex: 1; }
+  .swatch {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 0.6rem 0.5rem;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #555;
+    cursor: pointer;
+    background: #fff;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+  }
+  .swatch:hover { border-color: #ce93d8; }
+  .swatch.selected { border-color: #9c00b4; color: #9c00b4; background: #fdf0ff; font-weight: 600; }
+
+  .quantity-row { display: flex; align-items: center; gap: 1rem; padding: 1.2rem 0; }
+  .quantity-label { width: 130px; flex-shrink: 0; font-weight: 500; font-size: 0.92rem; color: #555; }
+  .quantity-control { display: flex; align-items: center; border: 1px solid #ddd; border-radius: 6px; overflow: hidden; }
+  .quantity-control button {
+    width: 36px; height: 36px; background: #f5f5f5; border: none; font-size: 1.1rem; cursor: pointer;
+    color: #555; transition: background 0.15s;
+  }
+  .quantity-control button:hover { background: #eaeaea; }
+  .quantity-control input {
+    width: 48px; height: 36px; border: none; border-left: 1px solid #ddd; border-right: 1px solid #ddd;
+    text-align: center; font-size: 0.95rem; outline: none;
+  }
+
+  .action-buttons { display: flex; gap: 1rem; margin-top: 1rem; }
+  .btn-add-cart, .btn-buy-now {
+    flex: 1; padding: 0.95rem 1.5rem; border-radius: 8px; font-size: 1rem; font-weight: 600;
+    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+    transition: opacity 0.2s, transform 0.1s;
+  }
+  .btn-add-cart svg { width: 20px; height: 20px; }
+  .btn-add-cart {
+    background: #fdf0ff; color: #9c00b4; border: 1.5px solid #9c00b4;
+  }
+  .btn-add-cart:hover { background: #fbe4ff; }
+  .btn-buy-now {
+    background: linear-gradient(90deg, #7b0094, #9c00b4); color: #fff; border: none; flex-direction: column; gap: 0.1rem;
+  }
+  .btn-buy-now:hover { opacity: 0.92; }
+  .btn-buy-now:active, .btn-add-cart:active { transform: scale(0.98); }
+  .btn-buy-now .buy-price { font-size: 1.15rem; }
+  .btn-buy-now .buy-label { font-size: 0.85rem; font-weight: 400; }
+
+  .toast {
+    position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
+    background: #333; color: #fff; padding: 0.8rem 1.5rem; border-radius: 8px; font-size: 0.9rem;
+    z-index: 9999; opacity: 0; transition: all 0.3s ease; pointer-events: none;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  .toast.success { background: #059669; }
+  .toast.error { background: #dc2626; }
+
+  .seller-section { max-width: 1200px; margin: 0 auto 2.5rem; padding: 0 5%; }
+  .seller-panel {
+    background: #fafafa;
+    border-radius: 12px;
+    padding: 1.75rem 2rem;
+  }
+  .seller-top {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.6rem;
+  }
+  .seller-id { display: flex; align-items: center; gap: 1.1rem; }
+  .seller-avatar { width: 60px; height: 60px; border-radius: 50%; background: #e91e8c; flex-shrink: 0; }
+  .seller-name { font-size: 1.02rem; font-weight: 600; color: #333; }
+  .seller-seen { font-size: 0.85rem; color: #888; margin-top: 2px; }
+  .seller-actions { display: flex; gap: 0.6rem; margin-top: 0.7rem; }
+  .btn-chat, .btn-shop {
+    display: flex; align-items: center; gap: 0.4rem;
+    padding: 0.45rem 0.9rem; border-radius: 8px; font-size: 0.82rem; font-weight: 600;
+    cursor: pointer; text-decoration: none; transition: background 0.15s;
+  }
+  .btn-chat svg, .btn-shop svg { width: 15px; height: 15px; }
+  .btn-chat { background: #fdf0ff; color: #9c00b4; border: 1.5px solid #9c00b4; }
+  .btn-chat:hover { background: #fbe4ff; }
+  .btn-shop { background: #fff; color: #333; border: 1px solid #ddd; }
+  .btn-shop:hover { background: #f5f5f5; }
+
+  .seller-divider { width: 1px; align-self: stretch; background: #e2e2e2; margin: 0 4px; }
+
+  .seller-stats {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    row-gap: 0.9rem;
+    column-gap: 3.2rem;
+    flex: 1;
+  }
+  .stat-item span { display: block; font-size: 0.82rem; color: #888; }
+  .stat-item strong {
+    display: block; font-size: 0.98rem; font-weight: 600; color: #9c00b4; margin-top: 3px;
+    font-variant-numeric: tabular-nums lining-nums; letter-spacing: -0.01em;
+  }
+
+  .seller-content-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 1.4rem;
+    margin-top: 1.6rem;
+  }
+  .spec-box {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 1.4rem 1.6rem;
+    min-height: 240px;
+  }
+  .spec-box h4 { font-size: 0.98rem; font-weight: 600; color: #333; }
+  .coupon-box {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 1.4rem 1.5rem;
+  }
+  .coupon-box h4 { font-size: 0.98rem; font-weight: 600; color: #333; margin-bottom: 1rem; }
+  .coupon-card {
+    position: relative;
+    background: #f3d9fa;
+    border-radius: 10px;
+    padding: 0.95rem 1.2rem;
+    margin-bottom: 0.6rem;
+    overflow: hidden;
+  }
+  .coupon-card::before, .coupon-card::after {
+    content: ""; position: absolute; width: 16px; height: 16px;
+    background: #fff; border-radius: 50%; top: 50%; transform: translateY(-50%);
+  }
+  .coupon-card::before { left: -8px; }
+  .coupon-card::after { right: -8px; }
+  .coupon-dashed { position: absolute; right: 50px; top: 0; bottom: 0; width: 0; border-left: 2px dashed #fff; opacity: .8; }
+  .coupon-title { font-weight: 700; color: #9c00b4; font-size: 1rem; }
+  .coupon-sub { font-size: 0.8rem; color: #7b5c86; margin-top: 3px; }
+  .coupon-progress { height: 5px; border-radius: 4px; background: #fff; margin-top: 0.7rem; overflow: hidden; }
+  .coupon-progress span { display: block; height: 100%; background: #7b0094; border-radius: 4px; }
+  .coupon-usage { font-size: 0.72rem; color: #7b5c86; margin-top: 5px; }
+  .coupon-usage b { color: #7b0094; font-weight: 700; }
+  .coupon-collect {
+    width: 100%; padding: 0.55rem; border-radius: 8px; border: 1px solid #ddd;
+    background: #fff; font-weight: 600; font-size: 0.88rem; color: #333; margin-bottom: 0.9rem; cursor: pointer;
+  }
+  .coupon-collect:hover { background: #f9f0fc; border-color: #ce93d8; color: #9c00b4; }
+
+  @media (max-width: 900px) {
+    .seller-stats { grid-template-columns: repeat(2, auto); }
+    .seller-divider { display: none; }
+    .seller-content-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 900px) {
+    .product-container { grid-template-columns: 1fr; padding: 1.5rem; }
+    .info-row, .option-group, .quantity-row { flex-direction: column; gap: 0.5rem; }
+    .info-row .info-label, .option-label, .quantity-label { width: auto; }
+    .swatch-grid { grid-template-columns: repeat(3, 1fr); }
+    .action-buttons { flex-direction: column; }
+    .nav-menu { gap: 1rem; }
+  }
+  .related-section { max-width: 1200px; margin: 0 auto; padding: 0 5% 4rem; }
+  .related-title {
+    font-family: 'Kanit', sans-serif;
+    font-weight: 700; font-size: 1.4rem; color: #7b0094; margin-bottom: 1.2rem;
+  }
+  .related-grid, .rec-card-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+  .rec-card {
+    background: #fafafa; border-radius: 10px; padding: 1rem; cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .rec-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(156, 0, 180, 0.12); }
+  .rec-card-img {
+    aspect-ratio: 1; background: #eee; border-radius: 8px; display: flex; align-items: center;
+    justify-content: center; overflow: hidden; margin-bottom: 0.7rem;
+  }
+  .rec-card-img img { width: 100%; height: 100%; object-fit: contain; padding: 0.6rem; }
+  .rec-card-icon { font-size: 1.8rem; }
+  .rec-card-name {
+    font-weight: 500; font-size: 0.9rem; color: #333;
+    margin-bottom: 0.3rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .rec-card-price { font-weight: 700; font-size: 0.95rem; color: #9c00b4; }
+  @media (max-width: 900px) {
+    .related-grid, .rec-card-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="nav-container">
+    <a href="home.html" class="logo">
+      <span class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+      </span>
+      <span>ONLINE SHOPPING</span>
+    </a>
+    <nav class="nav-menu">
+      <a href="home.html" class="nav-link">Home</a>
+      <a href="#" class="nav-link">About</a>
+      <a href="home.html#products" class="nav-link active">Shop</a>
+      <a href="#" class="nav-link">Contect</a>
+    </nav>
+    <div class="nav-icons">
+      <a href="#" aria-label="Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </a>
+      <a href="home.html" aria-label="Wishlist">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+        <span class="cart-badge" id="wishBadge" style="display:none;">0</span>
+      </a>
+      <a href="login.html" aria-label="Account">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+        </svg>
+      </a>
+      <a href="cart.html" aria-label="Cart">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+        </svg>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main class="product-page">
+  <div class="product-container">
+
+    <div class="product-gallery" id="productGallery">
+      <div class="placeholder">กำลังโหลด...</div>
+    </div>
+
+    <div class="product-details">
+      <h1 class="product-title" id="productTitle">กำลังโหลดข้อมูลสินค้า...</h1>
+
+      <div class="product-meta">
+        <div class="meta-left">
+          <button type="button" class="wish-btn" id="metaWishBtn" aria-label="เพิ่มในรายการโปรด" onclick="toggleProductWish()">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+          <span id="likesCount">10k</span>
+          <span class="divider">|</span>
+          <span>5K รีวิว</span>
+        </div>
+        <a href="#" class="report-link">รายงานสินค้า</a>
+      </div>
+
+      <div class="price-box">$ <span id="priceRange">-</span></div>
+
+      <p class="product-desc" id="productDesc" style="display:none;"></p>
+
+      <div class="info-row">
+        <span class="shipping-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
+            <circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+          </svg>
+        </span>
+        <div class="info-value">
+          <div><strong>การจัดส่ง</strong></div>
+          จะได้รับภายใน 3 - 5 วันทำการ ・ ส่งฟรี
+          <div class="info-sub">รับโค้ดส่วนลด $30 หากได้รับสินค้าล่าช้า</div>
+        </div>
+      </div>
+
+      <div class="info-row">
+        <span class="info-label">Online Shopping<br>การันตี</span>
+        <div class="info-value guarantee-value">
+          <span>ช้อปที่นี่ถูกชัวร์ • เก็บเงินปลายทาง • ความคุ้มครองสินค้า</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+
+      <div class="option-group">
+        <span class="option-label">สี</span>
+        <div class="swatch-grid" id="colorGrid">
+          <div class="swatch" data-value="ขาว">ขาว</div>
+          <div class="swatch" data-value="ดำ">ดำ</div>
+          <div class="swatch" data-value="เทา">เทา</div>
+          <div class="swatch" data-value="ชมพู">ชมพู</div>
+          <div class="swatch" data-value="ฟ้า">ฟ้า</div>
+          <div class="swatch" data-value="ม่วง">ม่วง</div>
+        </div>
+      </div>
+      <div class="option-group">
+        <span class="option-label">ไซส์</span>
+        <div class="swatch-grid" id="sizeGrid">
+          <div class="swatch" data-value="60%">60%</div>
+          <div class="swatch" data-value="TKL">TKL</div>
+          <div class="swatch" data-value="Full">Full Size</div>
+        </div>
+      </div>
+
+      <div class="quantity-row">
+        <span class="quantity-label">จำนวน</span>
+        <div class="quantity-control">
+          <button type="button" onclick="changeQty(-1)" aria-label="ลดจำนวน">-</button>
+          <input type="text" id="qtyInput" value="1" readonly>
+          <button type="button" onclick="changeQty(1)" aria-label="เพิ่มจำนวน">+</button>
+        </div>
+      </div>
+
+      <!-- เก็บActions ของผู้ใช้ -->
+      <div class="action-buttons">
+        <button type="button" class="btn-add-cart" onclick="addToCart()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+            <line x1="16" y1="10" x2="10" y2="10"/><line x1="13" y1="7" x2="13" y2="13"/>
+          </svg>
+          เพิ่มไปยังรถเข็น
+        </button>
+        <button type="button" class="btn-buy-now" onclick="buyNow()">
+          <span class="buy-label">ซื้อ</span>
+          <span class="buy-price" id="buyPrice">-</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<section class="seller-section">
+  <div class="seller-panel">
+    <div class="seller-top">
+      <div class="seller-id">
+        <div class="seller-avatar"></div>
+        <div>
+          <div class="seller-name">919JEANS</div>
+          <div class="seller-seen">เข้าสู่ระบบล่าสุดเมื่อ 16 นาที ที่ผ่านมา</div>
+          <div class="seller-actions">
+            <a href="#" class="btn-chat">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></svg>
+              แชทเลย
+            </a>
+            <a href="#" class="btn-shop">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1.5-5h15L21 9"/><path d="M3 9h18v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M9 13h6"/></svg>
+              ดูร้านค้า
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="seller-divider"></div>
+
+      <div class="seller-stats">
+        <div class="stat-item"><span>คะแนน</span><strong>46.9k</strong></div>
+        <div class="stat-item"><span>อัตราการตอบกลับ</span><strong>100%</strong></div>
+        <div class="stat-item"><span>เข้าร่วมเมื่อ</span><strong>21 เดือน ที่ผ่านมา</strong></div>
+        <div class="stat-item"><span>รายการสินค้า</span><strong>51</strong></div>
+        <div class="stat-item"><span>เวลาในการตอบกลับภายใน</span><strong>ไม่กี่นาที</strong></div>
+        <div class="stat-item"><span>ผู้ติดตาม</span><strong>12.1k</strong></div>
+      </div>
+    </div>
+
+    <div class="seller-content-grid">
+      <div class="spec-box">
+        <h4>ข้อมูลจำเพาะของสินค้า</h4>
+      </div>
+
+      <div class="coupon-box">
+        <h4>โค้ดส่วนลดร้านค้า</h4>
+
+        <div class="coupon-card">
+          <div class="coupon-dashed"></div>
+          <div class="coupon-title">ส่วนลด 25%</div>
+          <div class="coupon-sub">ขั้นต่ำ $0 ลดสูงสุด $1</div>
+          <div class="coupon-progress"><span style="width:84%;"></span></div>
+          <div class="coupon-usage">ใช้แล้ว <b>84%</b> ใช้ได้ถึง: [ ]</div>
+        </div>
+        <button type="button" class="coupon-collect">เก็บ</button>
+
+        <div class="coupon-card">
+          <div class="coupon-dashed"></div>
+          <div class="coupon-title">ส่วนลด $0.5</div>
+          <div class="coupon-sub">ขั้นต่ำ $15</div>
+          <div class="coupon-progress"><span style="width:15%;"></span></div>
+          <div class="coupon-usage">ใช้แล้ว <b>15%</b> ใช้ได้ถึง: [ ]</div>
+        </div>
+        <button type="button" class="coupon-collect">เก็บ</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== สินค้าที่เกี่ยวข้อง (Recommendation) ===== -->
+<section class="related-section" id="relatedSection" style="display:none;">
+  <h2 class="related-title">สินค้าที่เกี่ยวข้อง</h2>
+  <div class="related-grid" id="relatedGrid"></div>
+</section>
+
+<div class="toast" id="toast"></div>
+
+<script src="recommend.js"></script>
+<script>
+var API_BASE = 'https://1270dhw9-3000.asse.devtunnels.ms/api';
+  var CART_KEY = 'cart';
+  var params = new URLSearchParams(window.location.search);
+  var PRODUCT_ID = params.get('id') || '';
+  var PRODUCT_NAME = '';
+  var PRODUCT_CATEGORY = '';
+  var BASE_PRICE = 0;
+  var productLoaded = false;
+  var qty = 1;
+  var selectedColor = null;
+  var selectedSize = null;
+  var WISH_KEY = 'wishlist';
+  var productLikes = null;
+
+  function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.textContent = str == null ? '' : String(str);
+    return div.innerHTML;
+  }
+
+  function getCart() {
+    try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); } catch (e) { return []; }
+  }
+  function saveCart(cart) {
+    localStorage.setItem(CART_KEY, JSON.stringify(cart));
+  }
+  function updateCartBadge() {
+    var cart = getCart();
+    var count = cart.reduce(function (sum, item) { return sum + item.qty; }, 0);
+    var badge = document.getElementById('cartBadge');
+    badge.textContent = count;
+    badge.style.display = count > 0 ? 'block' : 'none';
+  }
+
+  // ===== รายการโปรด (Wishlist) - ใช้ localStorage key เดียวกับ home.html =====
+  function getWishlist() {
+    try { return JSON.parse(localStorage.getItem(WISH_KEY) || '[]'); } catch (e) { return []; }
+  }
+  function saveWishlist(list) {
+    localStorage.setItem(WISH_KEY, JSON.stringify(list));
+  }
+  function isWished(id) {
+    return getWishlist().indexOf(String(id)) !== -1;
+  }
+  function updateWishBadge() {
+    var badge = document.getElementById('wishBadge');
+    if (!badge) return;
+    var count = getWishlist().length;
+    badge.textContent = count;
+    badge.style.display = count > 0 ? 'block' : 'none';
+  }
+  function formatCount(n) {
+    n = Number(n);
+    if (isNaN(n)) return null;
+    if (n >= 1000) return (n / 1000).toFixed(n % 1000 === 0 ? 0 : 1) + 'K';
+    return String(n);
+  }
+  function pseudoLikes(id) {
+    var str = String(id || '');
+    var hash = 0;
+    for (var i = 0; i < str.length; i++) {
+      hash = (hash * 31 + str.charCodeAt(i)) >>> 0;
+    }
+    return 10 + (hash % 291);
+  }
+  function renderMetaWishState() {
+    var btn = document.getElementById('metaWishBtn');
+    if (btn) btn.classList.toggle('active', isWished(PRODUCT_ID));
+    var countEl = document.getElementById('likesCount');
+    if (countEl) {
+      var base = productLikes != null ? productLikes : pseudoLikes(PRODUCT_ID);
+      countEl.textContent = formatCount(base + (isWished(PRODUCT_ID) ? 1 : 0)) || base;
+    }
+  }
+  function toggleProductWish() {
+    if (!PRODUCT_ID) return;
+    var list = getWishlist();
+    var idx = list.indexOf(String(PRODUCT_ID));
+    var btn = document.getElementById('metaWishBtn');
+    if (idx === -1) {
+      list.push(String(PRODUCT_ID));
+      if (btn) { btn.classList.remove('pulse'); void btn.offsetWidth; btn.classList.add('pulse'); }
+    } else {
+      list.splice(idx, 1);
+    }
+    saveWishlist(list);
+    updateWishBadge();
+    renderMetaWishState();
+  }
+  window.addEventListener('storage', function (e) {
+    if (e.key === WISH_KEY) { updateWishBadge(); renderMetaWishState(); }
+  });
+
+  function updateBuyPrice() {
+    document.getElementById('buyPrice').textContent = '$' + (BASE_PRICE * qty).toFixed(2);
+  }
+
+  function changeQty(delta) {
+    qty = Math.max(1, qty + delta);
+    document.getElementById('qtyInput').value = qty;
+    updateBuyPrice();
+  }
+
+  function setupSwatches(gridId, onSelect) {
+    var grid = document.getElementById(gridId);
+    grid.querySelectorAll('.swatch').forEach(function (el) {
+      el.addEventListener('click', function () {
+        grid.querySelectorAll('.swatch').forEach(function (s) { s.classList.remove('selected'); });
+        el.classList.add('selected');
+        onSelect(el.getAttribute('data-value'));
+      });
+    });
+  }
+
+  setupSwatches('colorGrid', function (v) { selectedColor = v; });
+  setupSwatches('sizeGrid', function (v) { selectedSize = v; });
+
+  var toastTimer;
+  function showToast(msg, type) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast show ' + (type || '');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.className = 'toast'; }, 2500);
+  }
+
+  function validateOptions() {
+    if (!productLoaded) { showToast('กำลังโหลดข้อมูลสินค้า กรุณารอสักครู่', 'error'); return false; }
+    if (!selectedColor) { showToast('กรุณาเลือกสี', 'error'); return false; }
+    if (!selectedSize) { showToast('กรุณาเลือกไซส์', 'error'); return false; }
+    return true;
+  }
+  function addItemToCart() {
+    var cart = getCart();
+    var itemKey = PRODUCT_ID + '|' + selectedColor + '|' + selectedSize;
+    var existing = cart.find(function (item) { return item.key === itemKey; });
+    if (existing) {
+      existing.qty += qty;
+    } else {
+      cart.push({
+        key: itemKey,
+        id: PRODUCT_ID,
+        name: PRODUCT_NAME,
+        price: BASE_PRICE,
+        color: selectedColor,
+        size: selectedSize,
+        qty: qty
+      });
+    }
+    saveCart(cart);
+    updateCartBadge();
+    RCM.trackEvent(PRODUCT_ID, PRODUCT_CATEGORY, 'cart');
+  }
+
+  function addToCart() {
+    if (!validateOptions()) return;
+    addItemToCart();
+    showToast('เพิ่ม "' + selectedColor + ' / ' + selectedSize + '" x' + qty + ' ลงตะกร้าแล้ว', 'success');
+  }
+
+  function buyNow() {
+    if (!validateOptions()) return;
+    addItemToCart();
+    showToast('กำลังไปหน้าตะกร้า...', 'success');
+    setTimeout(function () { window.location.href = 'cart.html'; }, 500);
+  }
+
+  function renderGalleryImage(product) {
+    var gallery = document.getElementById('productGallery');
+    if (product.image) {
+      gallery.innerHTML = '<img src="' + escapeHtml(product.image) + '" alt="' + escapeHtml(product.name) + '" ' +
+        'onerror="this.parentElement.innerHTML=\'<div class=&quot;placeholder&quot; style=&quot;font-size:3rem;&quot;>' +
+        escapeHtml(product.icon || '📦') + '</div>\'">';
+    } else {
+      gallery.innerHTML = '<div class="placeholder" style="font-size:3rem;">' + escapeHtml(product.icon || '📦') + '</div>';
+    }
+  }
+
+  function showProductNotFound() {
+    document.getElementById('productTitle').textContent = 'ไม่พบสินค้านี้';
+    document.getElementById('priceRange').textContent = '-';
+    document.getElementById('productGallery').innerHTML = '<div class="placeholder">ไม่พบสินค้า</div>';
+    showToast('ไม่พบสินค้าที่ต้องการ หรือเชื่อมต่อ backend ไม่ได้', 'error');
+  }
+
+  function loadProduct() {
+    if (!PRODUCT_ID) { showProductNotFound(); return; }
+    fetch(API_BASE + '/products/all')
+      .then(function (res) {
+        if (!res.ok) throw new Error('load failed');
+        return res.json();
+      })
+      .then(function (products) {
+        var product = products.find(function (p) { return p.id === PRODUCT_ID; });
+        if (!product) { showProductNotFound(); return; }
+
+        PRODUCT_NAME = product.name;
+        PRODUCT_CATEGORY = product.category || '';
+        BASE_PRICE = Number(product.price) || 0;
+        productLikes = product.likes != null ? Number(product.likes) : null;
+        productLoaded = true;
+        renderMetaWishState();
+
+        document.getElementById('productTitle').textContent = product.name;
+        document.getElementById('priceRange').textContent = BASE_PRICE.toFixed(2);
+        renderGalleryImage(product);
+
+        var descEl = document.getElementById('productDesc');
+        if (product.desc) {
+          descEl.textContent = product.desc;
+          descEl.style.display = 'block';
+        }
+
+        updateBuyPrice();
+        RCM.trackEvent(PRODUCT_ID, PRODUCT_CATEGORY, 'view');
+        loadRelatedProducts();
+      })
+      .catch(function () {
+        showProductNotFound();
+      });
+  }
+
+  function loadRelatedProducts() {
+    RCM.fetchRecommendations({ productId: PRODUCT_ID, limit: 4 })
+      .then(function (data) {
+        var section = document.getElementById('relatedSection');
+        var grid = document.getElementById('relatedGrid');
+        if (!data.recommendations || data.recommendations.length === 0) {
+          section.style.display = 'none';
+          return;
+        }
+        grid.innerHTML = data.recommendations.map(RCM.recCardHtml).join('');
+        section.style.display = 'block';
+      })
+      .catch(function () {
+        document.getElementById('relatedSection').style.display = 'none';
+      });
+  }
+
+  updateCartBadge();
+  updateWishBadge();
+  renderMetaWishState();
+  loadProduct();
+</script>
+
+</body>
+</html>

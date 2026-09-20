@@ -1,0 +1,22 @@
+cd project/backend/
+
+npm install
+
+npm start
+
+
+netstat -ano | findstr :9000
+
+
+taskkill /F /PID 12345
+
+
+https://1270dhw9-5500.asse.devtunnels.ms/project/frontend/home.html
+https://1270dhw9-5500.asse.devtunnels.ms/project/frontend/product.html
+https://1270dhw9-5500.asse.devtunnels.ms/project/frontend/cart.html
+https://1270dhw9-5500.asse.devtunnels.ms/project/frontend/login.html
+
+
+--รหัสแอดมิน
+admin
+admin1234

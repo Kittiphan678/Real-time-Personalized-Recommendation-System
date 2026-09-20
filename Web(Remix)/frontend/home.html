@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Online Shopping - Home</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=Bricolage+Grotesque:wght@500;600;700;800&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+    * { font-family: 'Syne', sans-serif; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: #fff; color: #333; line-height: 1.6; }
+
+    .section-title {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #111;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.01em;
+      scroll-margin-top: 24px;
+    }
+    .product-name {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 600;
+      font-size: 1.2rem;
+      color: #111;
+      letter-spacing: -0.01em;
+    }
+    .product-price {
+      font-family: 'Archivo', sans-serif;
+      font-weight: 700;
+      font-size: 1.35rem;
+      color: #111;
+      font-variant-numeric: tabular-nums;
+    }
+    .product-likes {
+      font-family: 'Archivo', sans-serif;
+      font-weight: 500;
+      font-size: 0.92rem;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .product-likes svg { width: 18px; height: 18px; color: #e53935; fill: #e53935; }
+    .navbar { background: #f8dfff; padding: 1rem 5%; }
+    .nav-container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .logo { display: flex; align-items: center; gap: 0.6rem; color: #9c00b4; font-weight: 700; font-size: 1.1rem; text-decoration: none; }
+    .logo svg { width: 32px; height: 32px; }
+    .nav-menu { display: flex; gap: 2.5rem; flex-wrap: wrap; }
+    .nav-link { color: #7b0094; text-decoration: none; font-weight: 500; font-size: 1rem; transition: color 0.2s; }
+    .nav-link:hover { color: #e91e8c; }
+    .nav-link.active { text-decoration: underline; text-underline-offset: 6px; }
+    .nav-icons { display: flex; gap: 1.2rem; align-items: center; }
+    .nav-icons a { color: #7b0094; display: flex; align-items: center; transition: color 0.2s; position: relative; }
+    .nav-icons a:hover { color: #e91e8c; }
+    .nav-icons svg { width: 24px; height: 24px; }
+    .cart-badge {
+      position: absolute; top: -8px; right: -10px; background: #e91e8c; color: #fff;
+      font-size: 0.65rem; font-weight: 700; border-radius: 999px; padding: 1px 5px; font-family: 'Archivo', sans-serif;
+      display: none;
+    }
+    .cart-badge.show { display: block; }
+
+    .hero-section { max-width: 1200px; margin: 2rem auto; padding: 0 5%; }
+    .hero-container { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 2rem; background: #fdf7fc; padding: 2.5rem; border-radius: 12px; }
+    .trending-label { color: #9c00b4; font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; letter-spacing: 0.05em; }
+    .hero-title {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 2.6rem;
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 1.2rem;
+      background: linear-gradient(90deg, #4b6cf1, #9c00b4, #e91e8c);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.02em;
+    }
+    .hero-desc { color: #555; margin-bottom: 2rem; font-size: 0.98rem; }
+    .hero-buttons { display: flex; gap: 1.2rem; flex-wrap: wrap; }
+    .btn-primary { padding: 0.8rem 1.8rem; background: #9c00b4; color: #fff; border: none; border-radius: 6px; font-size: 1rem; font-weight: 500; cursor: pointer; transition: background 0.2s; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+    .btn-primary:hover { background: #7b0094; }
+    .btn-outline { padding: 0.8rem 1.8rem; background: #fff; color: #555; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; cursor: pointer; transition: border-color 0.2s, color 0.2s; text-decoration: none; }
+    .btn-outline:hover { border-color: #9c00b4; color: #9c00b4; }
+    .hero-image { background: #f0e6f0; border-radius: 8px; aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 0.9rem; overflow: hidden; }
+    .hero-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .slider-dots { text-align: right; margin-top: 0.8rem; padding-right: 2.5rem; }
+    .dot { font-size: 0.6rem; color: #ddd; margin: 0 0.25rem; }
+    .dot.active { color: #9c00b4; }
+    .features-section { max-width: 1200px; margin: 3rem auto; padding: 0 5%; }
+    .features-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+    .feature-item { text-align: left; display: flex; align-items: flex-start; gap: 0.6rem; }
+    .feature-item svg { width: 28px; height: 28px; flex-shrink: 0; margin-top: 2px; color: #9c00b4; }
+    .feature-text h4 {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 0.2rem;
+    }
+    .feature-text p { font-family: 'Archivo', sans-serif; font-size: 0.85rem; color: #888; margin: 0; }
+    .view-all-link { text-align: right; margin-top: 1.5rem; }
+    .view-all-link a {
+      font-family: 'Archivo', sans-serif;
+      color: #333;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: color 0.2s;
+    }
+    .view-all-link a:hover { color: #9c00b4; }
+    .view-all-link svg { width: 16px; height: 16px; }
+    .products-section { max-width: 1200px; margin: 0 auto; padding: 2rem 5% 0; }
+    .products-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-bottom: 4rem; }
+
+    /* Product Card */
+    .product-card { background: #f8f8f8; border-radius: 12px; overflow: hidden; transition: transform 0.25s, box-shadow 0.25s; cursor: pointer; }
+    .product-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(156, 0, 180, 0.15); }
+    .product-image { aspect-ratio: 1; background: #e8e8e8; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .product-image img { width: 100%; height: 100%; object-fit: contain; display: block; padding: 1rem; }
+    .product-image .placeholder { color: #aaa; font-size: 0.85rem; text-align: center; padding: 1rem; }
+    .product-info { padding: 1rem; }
+    .product-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .more-btn { background: none; border: none; cursor: pointer; color: #111; display: flex; align-items: center; padding: 4px; border-radius: 4px; transition: background 0.2s; }
+    .more-btn:hover { background: #e0e0e0; }
+    .more-btn svg { width: 18px; height: 18px; }
+    .product-footer { display: flex; justify-content: space-between; align-items: center; }
+    .wish-btn {
+      background: none; border: none; cursor: pointer; padding: 0;
+      display: flex; align-items: center; gap: 0.3rem;
+      font-family: 'Archivo', sans-serif; font-weight: 500; font-size: 0.92rem;
+      color: #333; transition: transform 0.15s;
+    }
+    .wish-btn:active { transform: scale(0.92); }
+    .wish-btn svg { width: 18px; height: 18px; fill: none; stroke: #ccc; stroke-width: 2; transition: fill 0.15s, stroke 0.15s; }
+    .wish-btn.active svg { fill: #e53935; stroke: #e53935; }
+    .wish-btn.pulse svg { animation: wishPulse 0.3s ease; }
+    @keyframes wishPulse { 0% { transform: scale(1); } 40% { transform: scale(1.3); } 100% { transform: scale(1); } }
+    .products-grid .loading-text, .products-grid .error-text {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 2rem;
+      font-family: 'Archivo', sans-serif;
+      color: #999;
+      font-size: 0.95rem;
+    }
+    .products-grid .error-text { color: #dc2626; }
+
+    .footer { background: #fef0ff; padding: 3rem 5% 1.5rem; margin-top: 2rem; }
+    .footer-container { max-width: 1200px; margin: 0 auto; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 2rem; margin-bottom: 2rem; }
+    .footer-logo { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem; }
+    .footer-logo-icon { background: #f062c0; padding: 10px; border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+    .footer-logo-icon svg { width: 26px; height: 26px; color: #fff; }
+    .footer-logo-text {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #9c00b4;
+    }
+    .footer-desc { color: #7b0094; font-size: 0.95rem; line-height: 1.7; }
+    .footer-col h4 {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      color: #7b0094;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .footer-col ul { list-style: none; padding: 0; margin: 0; }
+    .footer-col ul li { margin-bottom: 0.6rem; }
+    .footer-col ul li a { color: #7b0094; text-decoration: none; font-size: 0.95rem; transition: color 0.2s; }
+    .footer-col ul li a:hover { color: #e91e8c; }
+    .newsletter-form { display: flex; margin-bottom: 1rem; border-radius: 6px; overflow: hidden; }
+    .newsletter-form input { flex: 1; padding: 0.7rem 1rem; border: 1px solid #e0b0f0; border-right: none; border-radius: 6px 0 0 6px; font-size: 0.9rem; outline: none; background: #fff; font-family: 'Archivo', sans-serif; }
+    .newsletter-form input::placeholder { color: #bbb; }
+    .newsletter-btn { padding: 0.7rem 1.5rem; background: linear-gradient(90deg, #9c00b4, #e91e8c); color: #fff; border: none; border-radius: 0 6px 6px 0; font-weight: 600; cursor: pointer; transition: opacity 0.2s; font-family: 'Bricolage Grotesque', sans-serif; }
+    .newsletter-btn:hover { opacity: 0.9; }
+    .payment-methods { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+    .payment-badge {
+      background: #fff;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      font-family: 'Archivo', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #9c00b4;
+      border: 1px solid #e0b0f0;
+    }
+    .footer-bottom { border-top: 2px solid #9c00b4; padding-top: 1.5rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; color: #7b0094; font-size: 0.95rem; }
+    .footer-bottom-links { display: flex; gap: 2rem; flex-wrap: wrap; }
+    .footer-bottom-links a { color: #7b0094; text-decoration: none; transition: color 0.2s; }
+    .footer-bottom-links a:hover { color: #e91e8c; }
+
+  
+    @media (max-width: 1024px) {
+      .hero-container { grid-template-columns: 1fr; }
+      .features-container { grid-template-columns: repeat(2, 1fr); }
+      .products-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: repeat(2, 1fr); }
+      .nav-menu { gap: 1rem; }
+      .hero-title { font-size: 2rem; }
+    }
+    @media (max-width: 600px) {
+      .features-container { grid-template-columns: 1fr; }
+      .products-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .hero-container { padding: 1.5rem; }
+      .hero-title { font-size: 1.6rem; }
+    }
+</style>
+</head>
+<body>
+
+<div style="background-color:transparent;box-sizing:border-box;">
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="#" class="logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span>ONLINE SHOPPING</span>
+      </a>
+      <nav class="nav-menu">
+        <a href="#" class="nav-link active">Home</a>
+        <a href="#" class="nav-link">About</a>
+        <a href="#" class="nav-link">Shop</a>
+        <a href="#" class="nav-link">Contact</a>
+      </nav>
+      <div class="nav-icons">
+        <a href="#" aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </a>
+        <a href="#" aria-label="Wishlist">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+          <span class="cart-badge" id="wishBadge">0</span>
+        </a>
+        <a href="login.html" aria-label="Account">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </a>
+        <a href="cart.html" aria-label="Cart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"/>
+            <circle cx="20" cy="21" r="1"/>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+          </svg>
+          <span class="cart-badge" id="cartBadge">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="hero-section">
+    <div class="hero-container">
+      <div class="hero-content">
+        <p class="trending-label">TRENDING NOW</p>
+        <h1 class="hero-title">Discover Products You'll Love</h1>
+        <p class="hero-desc">
+          Shop The latest trending products curated for<br>
+          modern lifestyles!
+        </p>
+        <div class="hero-buttons">
+          <a href="#recommendedTitle" class="btn-primary">
+            Shop Now
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </a>
+          <a href="#" class="btn-outline">Explore Collection</a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <!-- ★ ใส่ลิงก์รูปแบนเนอร์ของคุณใน src ตรงนี้ได้เลย -->
+        <img src="https://i.pinimg.com/736x/77/19/00/77190088c8605dde08fdd0b3ab1a5441.jpg" alt="Banner" onerror="this.style.display='none';this.parentElement.innerHTML='<div class=\'placeholder\'>ใส่รูปแบนเนอร์<br>ของคุณที่นี่</div>'">
+      </div>
+    </div>
+    <div class="slider-dots">
+      <span class="dot active">&#9679;</span>
+      <span class="dot">&#9679;</span>
+      <span class="dot">&#9679;</span>
+    </div>
+  </main>
+  <section class="features-section">
+    <div class="features-container">
+      <div class="feature-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1" y="3" width="15" height="13"/>
+          <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
+          <circle cx="5.5" cy="18.5" r="2.5"/>
+          <circle cx="18.5" cy="18.5" r="2.5"/>
+        </svg>
+        <div class="feature-text">
+          <h4>Free Shipping</h4>
+          <p>On orders over $100</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        <div class="feature-text">
+          <h4>Secure Payment</h4>
+          <p>100% Secure</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="1 4 1 10 7 10"/>
+          <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+        </svg>
+        <div class="feature-text">
+          <h4>Easy Return</h4>
+          <p>30-Day Return Policy</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
+          <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
+        </svg>
+        <div class="feature-text">
+          <h4>24/7 Support</h4>
+          <p>Always Here to Help</p>
+        </div>
+      </div>
+    </div>
+    <div class="view-all-link">
+      <a href="#products">
+        View all
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <section class="products-section" id="products">
+
+    <h2 class="section-title" id="recommendedTitle">แนะนำสำหรับคุณ</h2>
+    <div class="products-grid" id="recommendedGrid">
+      <p class="loading-text">กำลังโหลดคำแนะนำ...</p>
+    </div>
+
+    <h2 class="section-title">For You</h2>
+    <div class="products-grid" id="foryouGrid">
+      <p class="loading-text">กำลังโหลดสินค้า...</p>
+    </div>
+
+    <h2 class="section-title">Trending Product</h2>
+    <div class="products-grid" id="trendingGrid">
+      <p class="loading-text">กำลังโหลดสินค้า...</p>
+    </div>
+
+    <!-- Gamer Gears -->
+    <h2 class="section-title">Gamer Gears</h2>
+    <div class="products-grid" id="gamerGrid">
+      <p class="loading-text">กำลังโหลดสินค้า...</p>
+    </div>
+
+  </section>
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="footer-logo">
+            <span class="footer-logo-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                <line x1="3" y1="6" x2="21" y2="6"/>
+                <path d="M16 10a4 4 0 0 1-8 0"/>
+              </svg>
+            </span>
+            <span class="footer-logo-text">ONLINE SHOPPING</span>
+          </div>
+          <p class="footer-desc">ช้อปสินค้าคุณภาพในราคาที่คุ้มค่า พร้อมบริการจัดส่งรวดเร็วทั่วประเทศ และทีมงานพร้อมดูแลคุณทุกขั้นตอน</p>
+        </div>
+        <div class="footer-col">
+          <h4>เมนูลัด</h4>
+          <ul>
+            <li><a href="#">หน้าแรก</a></li>
+            <li><a href="#">เกี่ยวกับเรา</a></li>
+            <li><a href="#">สินค้าทั้งหมด</a></li>
+            <li><a href="#">ติดต่อเรา</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>บริการลูกค้า</h4>
+          <ul>
+            <li><a href="#">หน้าแรก</a></li>
+            <li><a href="#">การจัดส่งสินค้า</a></li>
+            <li><a href="#">นโยบายคืนสินค้า</a></li>
+            <li><a href="#">คำถามที่พบบ่อย</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>รับข่าวสารและโปรโมชั่น</h4>
+          <p class="footer-desc" style="margin-bottom: 1rem;">สมัครรับข่าวสารสินค้าใหม่และส่วนลดพิเศษก่อนใคร</p>
+          <form class="newsletter-form" onsubmit="event.preventDefault(); alert('สมัครรับข่าวสารเรียบร้อย!');">
+            <input type="email" placeholder="อีเมลของคุณ" required>
+            <button type="submit" class="newsletter-btn">สมัคร</button>
+          </form>
+          <div class="payment-methods">
+            <span class="payment-badge">VISA</span>
+            <span class="payment-badge">MASTERCARD</span>
+            <span class="payment-badge">PROMPTPAY</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Online Shopping. สงวนลิขสิทธิ์ทุกประการ</span>
+        <div class="footer-bottom-links">
+          <a href="#">ข้อกำหนดการใช้งาน</a>
+          <a href="#">นโยบายความเป็นส่วนตัว</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<script src="recommend.js"></script>
+<script>
+
+  var API_BASE = 'https://1270dhw9-3000.asse.devtunnels.ms/api';
+
+  var LIKES_ICON = '<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';
+  var MORE_ICON = '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>';
+
+  function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.textContent = str == null ? '' : String(str);
+    return div.innerHTML;
+  }
+
+  function productImageHtml(product) {
+    if (product.image) {
+      return '<img src="' + escapeHtml(product.image) + '" alt="' + escapeHtml(product.name) + '" ' +
+        'onerror="this.style.display=\'none\';this.parentElement.innerHTML=\'<div class=\\\'placeholder\\\'>' +
+        escapeHtml(product.icon || '📦') + '<br>' + escapeHtml(product.name) + '</div>\'">';
+    }
+    return '<div class="placeholder">' + escapeHtml(product.icon || '📦') + '<br>' + escapeHtml(product.name) + '</div>';
+  }
+
+  function formatCount(n) {
+    n = Number(n);
+    if (isNaN(n)) return null;
+    if (n >= 1000) return (n / 1000).toFixed(n % 1000 === 0 ? 0 : 1) + 'K';
+    return String(n);
+  }
+
+  // ยังไม่มีฟิลด์ likes จาก backend -> สร้างเลขจำลองคงที่ต่อสินค้า (อิงจาก id)
+  // ไว้แสดงก่อน พอ backend ส่ง product.likes มาจริง โค้ดจะใช้ค่าจริงแทนทันที
+  function pseudoLikes(id) {
+    var str = String(id || '');
+    var hash = 0;
+    for (var i = 0; i < str.length; i++) {
+      hash = (hash * 31 + str.charCodeAt(i)) >>> 0;
+    }
+    return 10 + (hash % 291);
+  }
+
+  function productCardHtml(product) {
+    var price = Number(product.price);
+    var pid = escapeHtml(product.id);
+    var wished = isWished(product.id);
+    var base = product.likes != null ? Number(product.likes) : pseudoLikes(product.id);
+    var count = formatCount(base + (wished ? 1 : 0));
+    return (
+      '<div class="product-card" onclick="location.href=\'product.html?id=' + encodeURIComponent(product.id) + '\'">' +
+        '<div class="product-image">' + productImageHtml(product) + '</div>' +
+        '<div class="product-info">' +
+          '<div class="product-header">' +
+            '<span class="product-name">' + escapeHtml(product.name) + '</span>' +
+            '<button class="more-btn" aria-label="More" onclick="event.stopPropagation()">' + MORE_ICON + '</button>' +
+          '</div>' +
+          '<div class="product-footer">' +
+            '<span class="product-price">$' + (isNaN(price) ? '-' : price.toFixed(1)) + '</span>' +
+            '<button class="wish-btn' + (wished ? ' active' : '') + '" data-id="' + pid + '" data-base="' + base + '" ' +
+              'aria-label="เพิ่มในรายการโปรด" onclick="event.stopPropagation(); toggleWish(\'' + pid + '\', this)">' +
+              LIKES_ICON +
+              (count ? '<span class="wish-count">' + count + '</span>' : '') +
+            '</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>'
+    );
+  }
+
+  function renderGrid(gridId, products) {
+    var grid = document.getElementById(gridId);
+    if (!products || products.length === 0) {
+      grid.innerHTML = '<p class="loading-text">ยังไม่มีสินค้าในหมวดนี้</p>';
+      return;
+    }
+    grid.innerHTML = products.map(productCardHtml).join('');
+  }
+
+  function showGridError(gridId, message) {
+    var grid = document.getElementById(gridId);
+    grid.innerHTML = '<p class="error-text">' + escapeHtml(message) + '</p>';
+  }
+
+  function loadProducts() {
+    fetch(API_BASE + '/products')
+      .then(function (res) {
+        if (!res.ok) throw new Error('เรียกข้อมูลสินค้าไม่สำเร็จ');
+        return res.json();
+      })
+      .then(function (data) {
+        renderGrid('foryouGrid', data.foryou);
+        renderGrid('trendingGrid', data.trending);
+        renderGrid('gamerGrid', data.gamer);
+      })
+      .catch(function () {
+        var msg = 'โหลดสินค้าไม่สำเร็จ ตรวจสอบว่ารัน backend อยู่ (npm start)';
+        showGridError('foryouGrid', msg);
+        showGridError('trendingGrid', msg);
+        showGridError('gamerGrid', msg);
+      });
+  }
+
+  // ===== (Recommendation) =====
+  // Ranking/Intent Scoring: ถ้ามีพฤติกรรมในเซสชันนี้ (เคยดู/เคยคลิกสินค้าไหน) จะได้
+  // คำแนะนำแบบ personalized ตามหมวดหมู่ที่สนใจ ถ้ายังไม่มีข้อมูล (ผู้ใช้ใหม่ / cold-start)
+  // ระบบจะ fallback ไปแสดงสินค้ายอดนิยมแทน
+  function loadRecommended() {
+    RCM.fetchRecommendations({ limit: 4 })
+      .then(function (data) {
+        renderGrid('recommendedGrid', data.recommendations);
+        var titleEl = document.getElementById('recommendedTitle');
+        if (titleEl) {
+          if (data.reason === 'personalized') {
+            titleEl.textContent = 'แนะนำสำหรับคุณ (ตามที่คุณสนใจ)';
+          } else {
+            titleEl.textContent = 'แนะนำสำหรับคุณ (สินค้ายอดนิยม)';
+          }
+        }
+      })
+      .catch(function () {
+        showGridError('recommendedGrid', 'โหลดคำแนะนำไม่สำเร็จ');
+      });
+  }
+
+  // ==== (Wishlist) =====
+  var WISH_KEY = 'wishlist';
+  function getWishlist() {
+    try { return JSON.parse(localStorage.getItem(WISH_KEY) || '[]'); } catch (e) { return []; }
+  }
+  function saveWishlist(list) {
+    localStorage.setItem(WISH_KEY, JSON.stringify(list));
+  }
+  function isWished(id) {
+    return getWishlist().indexOf(String(id)) !== -1;
+  }
+  function updateWishBadge() {
+    var badge = document.getElementById('wishBadge');
+    if (!badge) return;
+    var count = getWishlist().length;
+    badge.textContent = count;
+    badge.classList.toggle('show', count > 0);
+  }
+  function toggleWish(id, btnEl) {
+    var list = getWishlist();
+    var idx = list.indexOf(String(id));
+    var nowWished;
+    if (idx === -1) {
+      list.push(String(id));
+      nowWished = true;
+      if (btnEl) { btnEl.classList.add('active'); btnEl.classList.remove('pulse'); void btnEl.offsetWidth; btnEl.classList.add('pulse'); }
+    } else {
+      list.splice(idx, 1);
+      nowWished = false;
+      if (btnEl) btnEl.classList.remove('active');
+    }
+    saveWishlist(list);
+    updateWishBadge();
+    if (btnEl) {
+      var base = Number(btnEl.getAttribute('data-base'));
+      var countEl = btnEl.querySelector('.wish-count');
+      if (!isNaN(base) && countEl) countEl.textContent = formatCount(base + (nowWished ? 1 : 0));
+    }
+  }
+  window.addEventListener('storage', function (e) { if (e.key === WISH_KEY) updateWishBadge(); });
+  updateWishBadge();
+
+  var CART_KEY = 'cart';
+  function getCart() {
+    try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); } catch (e) { return []; }
+  }
+  function updateCartBadge() {
+    var cart = getCart();
+    var count = cart.reduce(function (sum, item) { return sum + item.qty; }, 0);
+    var badge = document.getElementById('cartBadge');
+    if (!badge) return;
+    badge.textContent = count;
+    badge.classList.toggle('show', count > 0);
+  }
+  updateCartBadge();
+  window.addEventListener('storage', function (e) { if (e.key === CART_KEY) updateCartBadge(); });
+
+  loadProducts();
+  loadRecommended();
+</script>
+</body>
+</html>
